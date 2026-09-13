@@ -8,14 +8,13 @@
 *.ipr
 
 
-
-
 ### Java ###
 *.class
 *.log
 *.ctxt
 .mtj.tmp/
 *.jar
+!vista/src/main/webapp/WEB-INF/lib/all-themes-1.0.10.jar
 *.war
 *.nar
 *.ear
@@ -24,8 +23,6 @@
 *.rar
 hs_err_pid*
 replay_pid*
-
-
 
 
 ### Maven ###
@@ -44,8 +41,6 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 .project
 .classpath
-
-
 
 
 ### Eclipse ###

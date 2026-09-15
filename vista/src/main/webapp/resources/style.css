@@ -1,10 +1,92 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
+/* SAUAP - estilos minimos para Iniciar Sesion (JSF/PrimeFaces) */
 
-.body{
-    background: black;
+* {
+    box-sizing: border-box;
 }
 
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    color: #2E2E2E;
+    background: #FFFFFF;
+}
+
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 70px;
+}
+
+/*Logo SAUAP*/
+
+
+
+
+
+/*Formulario*/
+
+.login-card {
+    width: 340px;
+    margin-top: 48px;
+}
+
+.login-card h1 {
+    color: #83AE85;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 18px 0;
+}
+
+.campo {
+    margin-bottom: 16px;
+}
+
+.campo label {
+    display: block;
+    color: #83AE85;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 6px;
+}
+
+
+.campo input {
+    width: 100%;
+    height: 34px;
+    border: 1px solid #8A8A8A;
+    border-radius: 2px;
+    padding: 0 8px;
+    font-size: 14px;
+}
+
+.btn-primario,
+.btn-primario.ui-button {
+    width: 100%;
+    height: 42px;
+    background: #83AE85 !important;
+    border: none !important;
+    border-radius: 2px !important;
+    color: #FFFFFF !important;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-primario:hover,
+.btn-primario.ui-button:hover {
+    background: #6E9970 !important;
+}
+
+.ui-messages {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+.ui-messages-error, .ui-messages-error-summary {
+    color: #B23A3A;
+}

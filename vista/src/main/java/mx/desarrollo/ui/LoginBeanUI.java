@@ -41,7 +41,7 @@ public class LoginBeanUI implements Serializable{
         Usuario us= new Usuario();
         us.setId(0);
         us = loginHelper.Login(usuario.getCorreo(), usuario.getContrasena());
-          if(us != null && us.getId()!=null){
+          if(us != null && us.setId()!=null){
             // asigno el usuario encontrado al usuario de esta clase para que 
             // se muestre correctamente en la pagina de informacion
             usuario=us;

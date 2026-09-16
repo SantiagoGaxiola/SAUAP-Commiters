@@ -22,6 +22,13 @@
             <p:column styleClass="celda">ID Usuario:</p:column>
             <p:column><h:outputText value="#{loginUI.usuario.idUsuario}" /></p:column>
         </p:row>
+        <f:facet name="footer">
+            <p:row>
+                <p:column colspan="7">
+                    <h:link outcome="profesores" value="Ir a profesores"/>
+                </p:column>
+            </p:row>
+        </f:facet>
     </p:panelGrid>
 </h:body>
 <style>

@@ -65,6 +65,11 @@ public class LoginBeanUI implements Serializable{
         }
     }
 
+    public String logout(){
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        return "login?faces-redirect=true";
+    }
+
 
     /* getters y setters*/
 

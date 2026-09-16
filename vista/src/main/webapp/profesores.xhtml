@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <h:outputStylesheet name="style.css" />
+</h:head>
+
+<h:body>
+    <div class="app">
+
+        <div class="sidebar">
+            <div class="logo-sidebar">
+                <h:graphicImage name="sauap.png" alt="Logo SAUAP" style="width: 150px; height: auto"/>
+            </div>
+
+            <nav>
+                    <a href="profesores.xhtml" class="activo">
+                            Profesores
+                    </a>
+            <a href="index.xhtml">
+                Mi perfil
+            </a>
+            </nav>
+
+            <h:form>
+                <h:commandLink action="#{loginUI.logout}" styleClass="salir">
+                        Cerrar sesion
+                </h:commandLink>
+            </h:form>
+        </div>
+
+        <div class="contenido">
+
+            <div class="encabezado">
+                <h1>Profesores</h1>
+                <p>Alta y administracion del personal docente</p>
+            </div>
+
+            <h:form id="formProfesores">
+
+                    <p:messages id="messages" showDetail="true" closable="true" />
+
+                    <div class="dos-columnas">
+
+                        <div class="panel">
+                            <div class="panel-titulo">
+                                <span>Profesores registrados</span>
+                                <span>#{profesorUI.profesores.size()} registros</span>
+                            </div>
+
+                            <p:dataTable value="#{profesorUI.profesores}" var="profesor"
+                                            styleClass="datos" emptyMessage="Aun no hay profesores registrados. ">
+
+                                    <p:column headerText="ID">
+                                            <h:outputText value ="#{profesor.idProfesor}" />
+                                    </p:column>
+
+                            <p:column headerText="Nombre">
+                                <h:outputText value ="#{profesor.nombre} #{profesor.apellidoPaterno} #{profesor.apellidoMaterno}" />
+                            </p:column>
+
+                            <p:column headerText="RFC">
+                                <h:outputText value ="#{profesor.rfc}" />
+                            </p:column>
+
+                            <p:column headerText="">
+                                <p:commandButton value="Eliminar" styleClass="btn-eliminar"
+                                                actionListener="#{profesorUI.eliminarProfesor(profesor)}"
+                                                update="formProfesores"/>
+                            </p:column>
+
+                            </p:dataTable>
+                        </div>
+
+                        <div class="form-panel">
+                            <h2>Nuevo Profesor</h2>
+
+                            <div class="campo">
+                                <label>Nombre</label>
+                                <p:inputText value="#{profesorUI.nuevoProfesor.nombre}"
+                                             placeholder="Max. 50 caracteres" maxlength="50" required="true"
+                                             requiredMessage="El nombre es obligatorio"/>
+                            </div>
+
+                            <div class="campo">
+                                <label>Apellido Paterno</label>
+                                <p:inputText value="#{profesorUI.nuevoProfesor.apellidoPaterno}"
+                                             maxlength="50" required="true"
+                                             requiredMessage="El apellido paterno es obligatorio"/>
+                            </div>
+
+                            <div class="campo">
+                                <label>Apellido Materno</label>
+                                <p:inputText value="#{profesorUI.nuevoProfesor.apellidoMaterno}"
+                                             maxlength="50" required="true"
+                                             requiredMessage="El apellido materno es obligatorio"/>
+                            </div>
+
+                            <div class="campo">
+                                <label>RFC</label>
+                                <p:inputText value="#{profesorUI.nuevoProfesor.rfc}"
+                                             maxlength="13" required="true"
+                                             requiredMessage="El RFC es obligatorio"/>
+                            </div>
+                            <p class="ayuda">Formato: 4 letras + 6 digitos (AAMMDD) + 3 alfanumericos.</p>
+
+                            <p:commandButton value="Registrar profesor" styleClass="btn-guardar"
+                                             style="width:100%;"
+                                             actionListener="#{profesorUI.registrarProfesor}"
+                                             update="formProfesores" />
+                        </div>
+                    </div>
+            </h:form>
+        </div>
+
+    </div>
+</h:body>
+</html>

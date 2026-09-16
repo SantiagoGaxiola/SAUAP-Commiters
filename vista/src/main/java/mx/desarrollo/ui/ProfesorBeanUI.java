@@ -78,17 +78,6 @@ public class ProfesorBeanUI implements Serializable{
         }
     }
 
-    public void eliminarProfesor(Profesor profesor){
-        try {
-            facadeProfesor.eliminarProfesor(profesor);
-            cargarProfesores();
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error al eliminar profesor", e);
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                            "Error al eliminar profesor: ", "Intente mas tarde"));
-        }
-    }
 
     public List<Profesor> getProfesores() {
         return profesores;

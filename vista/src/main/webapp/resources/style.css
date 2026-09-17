@@ -271,3 +271,70 @@ html, body {
 .btn-guardar.ui-button:hover {
     background: #6E9970 !important;
 }
+
+/*Catalogo de unidades*/
+
+.buscador,
+.buscador .ui-inputtext {
+    width: 100%;
+    height: 34px;
+    border: 1px solid #CFCFCF !important;
+    border-radius: 2px;
+    padding: 0 10px;
+    font-size: 13px;
+}
+
+.btn-editar,
+.btn-editar.ui-button {
+    background: #CBDDA8 !important;
+    color: #4A5C33 !important;
+    border: none !important;
+    border-radius: 2px !important;
+    padding: 6px 14px !important;
+    font-size: 12px !important;
+    cursor: pointer;
+    margin-right: 6px;
+}
+
+.btn-editar:hover,
+.btn-editar.ui-button:hover {
+    background: #BBCF96 !important;
+}
+
+.col-acciones {
+    text-align: right !important;
+    white-space: nowrap;
+}
+
+.tres-campos {
+    display: flex;
+    gap: 14px;
+}
+.tres-campos > * { flex: 1; }
+
+.acciones-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.btn-cancelar,
+.btn-cancelar.ui-button {
+    flex: 1;
+    height: 38px;
+    background: #FFFFFF !important;
+    border: 1px solid #CFCFCF !important;
+    border-radius: 2px !important;
+    color: #2E2E2E !important;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-cancelar:hover,
+.btn-cancelar.ui-button:hover {
+    background: #F2F2F2 !important;
+}
+
+.acciones-form .btn-guardar {
+    flex: 1;
+}

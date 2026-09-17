@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <h:outputStylesheet name="style.css" />
+</h:head>
+
+<h:body>
+    <div class="app">
+
+        <div class="sidebar">
+            <div class="logo-sidebar">
+                <h:graphicImage name="sauap.png" alt="Logo SAUAP" style="width: 150px; height: auto"/>
+            </div>
+
+            <nav>
+                    <a href="profesores.xhtml" class="activo">
+                            Profesores
+                    </a>
+                <a href="catalogo.xhtml" class="activo">
+                    Catalogo de unidades
+                </a>
+            <a href="index.xhtml">
+                Mi perfil
+            </a>
+            </nav>
+
+            <h:form>
+                <h:commandLink action="#{loginUI.logout}" styleClass="salir">
+                        Cerrar sesion
+                </h:commandLink>
+            </h:form>
+        </div>
+
+        <div class="contenido">
+
+            <div class="encabezado">
+                <h1>Catalogo de unidades de aprendizaje</h1>
+                <p>Alta, edicion y baja de las unidades del plan academico</p>
+            </div>
+
+            <h:form id="formCatalogo">
+
+                    <p:messages id="messages" showDetail="true" closable="true" />
+
+                <p:inputText value="#{catalogoUI.filtro}" styleClass="buscador"
+                    placeholder="Buscar unidad de aprendizaje..." style="width:100%;">
+                        <p:ajax event="keyup" delay="300" listener="#{catalogoUI.filtrar}"
+                        update="tablaUnidades" />
+                </p:inputText>
+
+                        <div class="panel" style="margin-bottom: 24px; margin-top: 16px;">
+                            <p:dataTable id="tablaUnidades" value="#{catalogoUI.unidadesFiltradas}" var="unidad"
+                            styleClass="datos" emptyMessage="No se encontraron unidades de aprendizaje">
+
+                                    <p:column headerText="ID">
+                                            <h:outputText value ="#{unidad.idUnidadAP}" />
+                                    </p:column>
+
+                            <p:column headerText="Unidad de aprendizaje">
+                                <h:outputText value ="#{unidad.nombre}" />
+                            </p:column>
+
+                            <p:column headerText="Hrs. Clase">
+                                <h:outputText value ="#{unidad.horasClase}" />
+                            </p:column>
+
+                                <p:column headerText="Hrs. Taller">
+                                    <h:outputText value ="#{unidad.horasTaller}" />
+                                </p:column>
+
+                                <p:column headerText="Hrs. Lab">
+                                    <h:outputText value ="#{unidad.horasLab}" />
+                                </p:column>
+
+                                <p:column headerText="" styleClass="col-acciones">
+                                    <p:commandButton value="Editar" styleClass="btn-sm btn-editar"
+                                                     actionListener="#{catalogoUI.cargarParaEditar(unidad)}"
+                                                     update="formCatalogo" process="@this" />
+                                    <p:commandButton value="Eliminar" styleClass="btn-sm btn-eliminar"
+                                                     actionListener="#{catalogoUI.eliminarUnidad(unidad)}"
+                                                     update="formCatalogo" process="@this" />
+                                </p:column>
+
+                            </p:dataTable>
+                        </div>
+
+                        <div class="form-panel" style="max-width: 510px;">
+                            <h2>
+                                <h:outputText value="Editar unidad de aprendizaje" rendered="#{catalogoUI.editando}" />
+                                <h:outputText value="Nueva unidad de aprendizaje" rendered="#{!catalogoUI.editando}" />
+                            </h2>
+
+                            <div class="campo">
+                                <label>Nombre de la unidad</label>
+                                <p:inputText value="#{catalogoUI.unidadForm.nombre}" style="width:100%;"
+                                             maxlength="50" required="true"
+                                             requiredMessage="El nombre de la unidad es obligatorio" />
+                            </div>
+
+                            <div class="tres-campos">
+                                <div class="campo">
+                                    <label>Horas clase</label>
+                                    <p:inputNumber value="#{catalogoUI.unidadForm.horasClase}"
+                                                   decimalPlaces="0" minValue="0" maxValue="4"
+                                                   style="width:100%;"
+                                                   requiredMessage="Horas Clase es obligatorio"/>
+                                </div>
+                                <div class="campo">
+                                    <label>Horas taller</label>
+                                    <p:inputNumber value="#{catalogoUI.unidadForm.horasTaller}"
+                                                   decimalPlaces="0" minValue="0" maxValue="4"
+                                                   style="width:100%;"
+                                                   requiredMessage="Horas Taller es obligatorio"/>
+                                </div>
+                                <div class="campo">
+                                    <label>Horas lab</label>
+                                    <p:inputNumber value="#{catalogoUI.unidadForm.horasLab}"
+                                                   decimalPlaces="0" minValue="0" maxValue="4"
+                                                   style="width:100%;"
+                                                   requiredMessage="Horas Lab es obligatorio"/>
+                                </div>
+                            </div>
+                            <div class="acciones-form">
+                            <p:commandButton value="Cancelar" styleClass="btn-cancelar"
+                                             actionListener="#{catalogoUI.nuevaUnidad}"
+                                             update="formCatalogo" process="@this" immediate="true" />
+                                <p:commandButton value="Guardar unidad" styleClass="btn-guardar"
+                                                 actionListener="#{catalogoUI.guardarUnidad}"
+                                                 update="formCatalogo"/>
+                        </div>
+                    </div>
+            </h:form>
+        </div>
+
+    </div>
+</h:body>
+</html>

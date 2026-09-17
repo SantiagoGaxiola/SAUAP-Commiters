@@ -27,8 +27,8 @@ public class FacadeUnidadAprendizaje {
         delegateUnidadAprendizaje.eliminarUnidadAprendizaje(unidadAprendizaje);
     }
 
-    public Optional<UnidadAprendizaje> buscarUnidadAprendizaje(Integer id){
-        return delegateUnidadAprendizaje.buscarUnidadAprendizaje(id);
+    public Optional<UnidadAprendizaje> buscarUnidadAprendizaje(String nombre){
+        return delegateUnidadAprendizaje.buscarUnidadAprendizaje(nombre);
     }
 
     public List<UnidadAprendizaje> obtenerTodos(){

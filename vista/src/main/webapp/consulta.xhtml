@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+    <h:outputStylesheet name="style.css" />
+</h:head>
+
+<h:body>
+    <div class="app">
+
+        <div class="sidebar">
+            <div class="logo-sidebar">
+                <h:graphicImage name="sauap.png" alt="Logo SAUAP" styleClass="logo-sidebar-img" />
+            </div>
+
+            <nav>
+                <a href="profesores.xhtml">
+                    Profesores
+                </a>
+                <a href="catalogo.xhtml">
+                    Catalogo de unidades
+                </a>
+                <a href="asignacion.xhtml">
+                    Asignacion
+                </a>
+                <a href="consulta.xhtml" class="activo">
+                    Consulta general
+                </a>
+                <a href="index.xhtml">
+                    Mi perfil
+                </a>
+            </nav>
+
+            <h:form>
+                <h:commandLink action="#{loginUI.logout}" styleClass="salir">
+                    Cerrar sesion
+                </h:commandLink>
+            </h:form>
+        </div>
+
+        <div class="contenido">
+
+            <div class="encabezado">
+                <h1>Consulta general de asignaciones</h1>
+                <p>Profesores ordenados por nombre, con sus unidades de aprendizaje asignadas.</p>
+            </div>
+
+            <h:form id="formConsulta">
+                <p:messages id="messages" showDetail="true" closable="true" />
+
+                <h:panelGroup rendered="#{empty consultaUI.tarjetas}" layout="block" styleClass="panel" style="padding: 24px;">
+                    <h:outputText value="Aun no hay asignaciones registradas." />
+                </h:panelGroup>
+
+                <ui:repeat value="#{consultaUI.tarjetas}" var="tarjeta">
+                    <div class="tarjeta-asignacion">
+                        <div class="tarjeta-cabecera">
+                            <span>#{tarjeta.profesor.nombreCompleto}</span>
+                            <span class="cuenta">#{tarjeta.totalUnidades} unidades asignadas</span>
+                        </div>
+
+                        <ui:repeat value="#{tarjeta.unidades}" var="fila">
+                            <div class="fila-unidad">
+                                <div class="nombre-unidad">#{fila.unidad.nombre}</div>
+                                <div class="sesiones">
+                                    <ui:repeat value="#{fila.sesiones}" var="sesion">
+                                        <div class="sesion">
+                                            <span class="chip #{sesion.claseChip}">#{sesion.etiquetaTipo}</span>
+                                            <span>#{sesion.etiquetaHorario}</span>
+                                        </div>
+                                    </ui:repeat>
+                                </div>
+                            </div>
+                        </ui:repeat>
+                    </div>
+                </ui:repeat>
+            </h:form>
+        </div>
+
+    </div>
+</h:body>
+</html>

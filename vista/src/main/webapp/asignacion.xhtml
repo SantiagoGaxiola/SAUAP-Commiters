@@ -28,6 +28,9 @@
                 <a href="asignacion.xhtml" class="activo">
                     Asignacion
                 </a>
+                <a href="consulta.xhtml">
+                    Consulta
+                </a>
                 <a href="index.xhtml">
                     Mi perfil
                 </a>
@@ -57,7 +60,7 @@
 
                         <div class="campo">
                             <label>Profesor</label>
-                            <p:selectOneMenu value="#{asignacionUI.idProfesorSeleccionado}" style="width:100%;">
+                            <p:selectOneMenu value="#{asignacionUI.idProfesorSeleccionado}" required="true" requiredMessage="Selecciona un profesor" style="width:100%;">
                                 <f:selectItem itemLabel="Selecciona un profesor" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{asignacionUI.profesores}" var="p"
                                                itemLabel="#{p.nombreCompleto}" itemValue="#{p.idProfesor}" />
@@ -68,7 +71,7 @@
 
                         <div class="campo">
                             <label>Unidad de aprendizaje</label>
-                            <p:selectOneMenu value="#{asignacionUI.idUnidadSeleccionada}" style="width:100%;">
+                            <p:selectOneMenu value="#{asignacionUI.idUnidadSeleccionada}" required="true" requiredMessage="Selecciona un profesor" style="width:100%;">
                                 <f:selectItem itemLabel="Selecciona una unidad" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{asignacionUI.unidades}" var="u"
                                                itemLabel="#{u.nombre}" itemValue="#{u.idUnidadAP}" />
@@ -84,7 +87,7 @@
                         <div class="tres-campos">
                             <div class="campo">
                                 <label>Dia</label>
-                                <p:selectOneMenu value="#{asignacionUI.diaSeleccionado}" style="width:100%;">
+                                <p:selectOneMenu value="#{asignacionUI.diaSeleccionado}" required="true" requiredMessage="Selecciona un dia" style="width:100%;">
                                     <f:selectItem itemLabel="Selecciona" itemValue="#{null}" noSelectionOption="true" />
                                     <f:selectItems value="#{asignacionUI.dias}" var="d" itemLabel="#{d}" itemValue="#{d}" />
                                     <p:ajax event="change" listener="#{asignacionUI.recalcularHorario}"
@@ -93,7 +96,7 @@
                             </div>
                             <div class="campo">
                                 <label>Hora inicio</label>
-                                <p:datePicker value="#{asignacionUI.horaInicio}" timeOnly="true"
+                                <p:datePicker value="#{asignacionUI.horaInicio}" required="true" timeOnly="true"
                                               pattern="hh:mm a" stepMinute="60" minTime="07:00" maxTime="22:00" style="width:100%;">
                                     <p:ajax event="dateSelect" listener="#{asignacionUI.recalcularHorario}"
                                             update="formAsignacion:panelHorario formAsignacion:btnGuardar" />
@@ -103,7 +106,7 @@
 
                         <div class="campo">
                             <label>Hora fin</label>
-                            <p:datePicker value="#{asignacionUI.horaFin}" timeOnly="true"
+                            <p:datePicker value="#{asignacionUI.horaFin}" required="true" timeOnly="true"
                                           pattern="hh:mm a" stepMinute="60" minTime="07:00" maxTime="22:00" style="width:100%;" >
                                 <p:ajax event="dateSelect" listener="#{asignacionUI.recalcularHorario}"
                                         update="formAsignacion:panelHorario formAsignacion:btnGuardar" />
@@ -113,11 +116,11 @@
                         <div class="tres-campos">
                             <div class="campo">
                                 <label>Grupo</label>
-                                <p:inputText value="#{asignacionUI.grupo}" maxlength="10" style="width:100%;" />
+                                <p:inputText value="#{asignacionUI.grupo}" required="true" maxlength="10" style="width:100%;" />
                             </div>
                             <div class="campo">
                                 <label>Periodo</label>
-                                <p:selectOneMenu value="#{asignacionUI.periodo}" style="width:100%;">
+                                <p:selectOneMenu value="#{asignacionUI.periodo}" required="true" style="width:100%;">
                                     <f:selectItem itemLabel="Selecciona" itemValue="#{null}" noSelectionOption="true" />
                                     <f:selectItems value="#{asignacionUI.periodos}" var="per" itemLabel="#{per}" itemValue="#{per}" />
                                     <p:ajax event="change" listener="#{asignacionUI.recalcularTipos}"
@@ -129,7 +132,7 @@
 
                         <div class="campo">
                             <label>Tipo de sesion</label>
-                            <p:selectOneMenu id="tipoSesion" value="#{asignacionUI.tipoSeleccionado}" style="width:100%;">
+                            <p:selectOneMenu id="tipoSesion" value="#{asignacionUI.tipoSeleccionado}" required="true" style="width:100%;">
                                 <f:selectItem itemLabel="Selecciona" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{asignacionUI.tiposDisponibles}" var="t"
                                                itemLabel="#{t.etiqueta}" itemValue="#{t.valor}" />

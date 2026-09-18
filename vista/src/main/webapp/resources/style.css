@@ -399,3 +399,81 @@ html, body {
     font-weight: 700;
     cursor: not-allowed;
 }
+
+/*Consulta general de asignaciones*/
+
+.tarjeta-asignacion {
+    border: 1px solid #CFCFCF;
+    margin-bottom: 20px;
+}
+
+.tarjeta-cabecera {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 1px solid #CFCFCF;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.tarjeta-cabecera .cuenta {
+    font-weight: 400;
+    font-size: 13px;
+    color: #6B6B6B;
+}
+
+.fila-unidad {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 12px 18px;
+    border-bottom: 1px solid #EDEDED;
+}
+
+.fila-unidad:last-child {
+    border-bottom: none;
+}
+
+.fila-unidad .nombre-unidad {
+    width: 200px;
+    flex-shrink: 0;
+    font-size: 13px;
+    align-self: center;
+    border-left: 1px solid #CFCFCF;
+    padding-left: 14px;
+    margin-left: -14px;
+}
+
+.sesiones {
+    flex: 1;
+    min-width: 220px;
+}
+
+.sesion {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 13px;
+}
+
+.chip {
+    border-radius: 12px;
+    padding: 3px 12px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.chip.clase {
+    background: #BFE3C4;
+    color: #2E6B37;
+}
+
+.chip.taller {
+    background: #F3DDA6;
+    color: #8A6416;
+}
+
+.chip.lab {
+    background: #BFD9EC;
+    color: #29587A;
+}

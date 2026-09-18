@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+    <h:outputStylesheet name="style.css" />
+</h:head>
+
+<h:body>
+    <div class="app">
+
+        <div class="sidebar">
+            <div class="logo-sidebar">
+                <h:graphicImage name="sauap.png" alt="Logo SAUAP" styleClass="logo-sidebar-img" />
+            </div>
+
+            <nav>
+                <a href="profesores.xhtml">
+                    Profesores
+                </a>
+                <a href="catalogo.xhtml">
+                    Catalogo de unidades
+                </a>
+                <a href="asignacion.xhtml" class="activo">
+                    Asignacion
+                </a>
+                <a href="index.xhtml">
+                    Mi perfil
+                </a>
+            </nav>
+
+            <h:form>
+                <h:commandLink action="#{loginUI.logout}" styleClass="salir">
+                    Cerrar sesion
+                </h:commandLink>
+            </h:form>
+        </div>
+
+        <div class="contenido">
+
+            <div class="encabezado">
+                <h1>Asignacion de carga academica</h1>
+                <p>Asigna unidades de aprendizaje validando cruces de horario.</p>
+            </div>
+
+            <h:form id="formAsignacion">
+
+                <p:messages id="messages" showDetail="true" closable="true" />
+
+                <div class="dos-columnas">
+
+                    <div class="form-panel">
+
+                        <div class="campo">
+                            <label>Profesor</label>
+                            <p:selectOneMenu value="#{asignacionUI.idProfesorSeleccionado}" style="width:100%;">
+                                <f:selectItem itemLabel="Selecciona un profesor" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{asignacionUI.profesores}" var="p"
+                                               itemLabel="#{p.nombreCompleto}" itemValue="#{p.idProfesor}" />
+                                <p:ajax event="change" listener="#{asignacionUI.recalcularHorario}"
+                                        update="formAsignacion:panelHorario formAsignacion:btnGuardar formAsignacion:infoUnidad" />
+                            </p:selectOneMenu>
+                        </div>
+
+                        <div class="campo">
+                            <label>Unidad de aprendizaje</label>
+                            <p:selectOneMenu value="#{asignacionUI.idUnidadSeleccionada}" style="width:100%;">
+                                <f:selectItem itemLabel="Selecciona una unidad" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{asignacionUI.unidades}" var="u"
+                                               itemLabel="#{u.nombre}" itemValue="#{u.idUnidadAP}" />
+                                <p:ajax event="change" listener="#{asignacionUI.recalcularTipos}"
+                                        update="formAsignacion:infoUnidad formAsignacion:tipoSesion" />
+                            </p:selectOneMenu>
+                        </div>
+                        <h:panelGroup id="infoUnidad" layout="block" styleClass="ayuda">
+                            <h:outputText rendered="#{asignacionUI.unidadSeleccionada != null}"
+                                          value="Horas semanales de esta unidad: #{asignacionUI.unidadSeleccionada.horasClase} clase - #{asignacionUI.unidadSeleccionada.horasTaller} taller - #{asignacionUI.unidadSeleccionada.horasLab} laboratorio" />
+                        </h:panelGroup>
+
+                        <div class="tres-campos">
+                            <div class="campo">
+                                <label>Dia</label>
+                                <p:selectOneMenu value="#{asignacionUI.diaSeleccionado}" style="width:100%;">
+                                    <f:selectItem itemLabel="Selecciona" itemValue="#{null}" noSelectionOption="true" />
+                                    <f:selectItems value="#{asignacionUI.dias}" var="d" itemLabel="#{d}" itemValue="#{d}" />
+                                    <p:ajax event="change" listener="#{asignacionUI.recalcularHorario}"
+                                            update="formAsignacion:panelHorario formAsignacion:btnGuardar" />
+                                </p:selectOneMenu>
+                            </div>
+                            <div class="campo">
+                                <label>Hora inicio</label>
+                                <p:datePicker value="#{asignacionUI.horaInicio}" timeOnly="true"
+                                              pattern="hh:mm a" stepMinute="60" minTime="07:00" maxTime="22:00" style="width:100%;">
+                                    <p:ajax event="dateSelect" listener="#{asignacionUI.recalcularHorario}"
+                                            update="formAsignacion:panelHorario formAsignacion:btnGuardar" />
+                                </p:datePicker>
+                            </div>
+                        </div>
+
+                        <div class="campo">
+                            <label>Hora fin</label>
+                            <p:datePicker value="#{asignacionUI.horaFin}" timeOnly="true"
+                                          pattern="hh:mm a" stepMinute="60" minTime="07:00" maxTime="22:00" style="width:100%;" >
+                                <p:ajax event="dateSelect" listener="#{asignacionUI.recalcularHorario}"
+                                        update="formAsignacion:panelHorario formAsignacion:btnGuardar" />
+                            </p:datePicker>
+                        </div>
+
+                        <div class="tres-campos">
+                            <div class="campo">
+                                <label>Grupo</label>
+                                <p:inputText value="#{asignacionUI.grupo}" maxlength="10" style="width:100%;" />
+                            </div>
+                            <div class="campo">
+                                <label>Periodo</label>
+                                <p:selectOneMenu value="#{asignacionUI.periodo}" style="width:100%;">
+                                    <f:selectItem itemLabel="Selecciona" itemValue="#{null}" noSelectionOption="true" />
+                                    <f:selectItems value="#{asignacionUI.periodos}" var="per" itemLabel="#{per}" itemValue="#{per}" />
+                                    <p:ajax event="change" listener="#{asignacionUI.recalcularTipos}"
+                                            update="formAsignacion:tipoSesion" />
+                                </p:selectOneMenu>
+
+                            </div>
+                        </div>
+
+                        <div class="campo">
+                            <label>Tipo de sesion</label>
+                            <p:selectOneMenu id="tipoSesion" value="#{asignacionUI.tipoSeleccionado}" style="width:100%;">
+                                <f:selectItem itemLabel="Selecciona" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{asignacionUI.tiposDisponibles}" var="t"
+                                               itemLabel="#{t.etiqueta}" itemValue="#{t.valor}" />
+                            </p:selectOneMenu>
+                        </div>
+                        <p class="ayuda">Solo se muestran los tipos que esta unidad tiene definidos y que aun no completan sus horas en el periodo capturado.</p>
+
+                        <p:commandButton id="btnGuardar" value="#{asignacionUI.hayConflicto ? asignacionUI.mensajeConflicto : 'Guardar'}"
+                                         styleClass="#{asignacionUI.hayConflicto ? 'btn-conflicto' : 'btn-primario'}"
+                                         style="width:100%;"
+                                         actionListener="#{asignacionUI.guardar}"
+                                         update="formAsignacion" />
+                    </div>
+
+                    <h:panelGroup id="panelHorario" layout="block" styleClass="form-panel">
+                        <table class="horario">
+                            <thead>
+                            <tr>
+                                <th>Hora</th>
+                                <ui:repeat value="#{asignacionUI.dias}" var="d">
+                                    <th>#{d}</th>
+                                </ui:repeat>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <ui:repeat value="#{asignacionUI.horario}" var="fila">
+                                <tr>
+                                    <td class="hora">#{fila.etiqueta}</td>
+                                    <ui:repeat value="#{fila.celdas}" var="celda">
+                                        <td class="celda-horario #{celda.estado}">
+                                            <h:outputText value="#{celda.texto}" rendered="#{celda.estado ne 'vacio'}" />
+                                            <h:outputText value=" (existente)" rendered="#{celda.estado eq 'existente'}" />
+                                            <h:outputText value=" (conflicto)" rendered="#{celda.estado eq 'conflicto'}" />
+                                        </td>
+                                    </ui:repeat>
+                                </tr>
+                            </ui:repeat>
+                            </tbody>
+                        </table>
+                        <p class="pie-panel">
+                            <h:outputText rendered="#{asignacionUI.idProfesorSeleccionado == null}"
+                                          value="Selecciona un profesor para ver su horario." />
+                            <h:outputText rendered="#{asignacionUI.idProfesorSeleccionado != null}"
+                                          value="Horario semanal del profesor seleccionado. En rojo, el bloque en conflicto con la nueva asignacion solicitada." />
+                        </p>
+                    </h:panelGroup>
+
+                </div>
+
+            </h:form>
+        </div>
+
+    </div>
+</h:body>
+</html>

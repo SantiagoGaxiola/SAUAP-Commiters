@@ -1,22 +1,26 @@
 package mx.desarrollo.delegate;
 
 import mx.desarrollo.entity.Asigna;
+import mx.desarrollo.entity.UnidadAprendizaje;
 import mx.desarrollo.persistence.integration.ServiceLocator;
 
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
-import java.time.Duration;
 
 public class DelegateAsigna {
 
+    public static final LocalTime HORA_MIN = LocalTime.of(7, 0);
+    public static final LocalTime HORA_MAX = LocalTime.of(22, 0);
+
     public void guardarAsignacion(Asigna asigna){
         validarAsignacion(asigna);
-        validarLimiteHoras(asigna);
-        validarTraslape(asigna);
         ServiceLocator.getInstanceAsignaDAO().save(asigna);
     }
 
     public void actualizarAsignacion(Asigna asigna){
+        validarAsignacion(asigna);
         ServiceLocator.getInstanceAsignaDAO().update(asigna);
     }
 
@@ -40,122 +44,81 @@ public class DelegateAsigna {
         return ServiceLocator.getInstanceAsignaDAO().obtenerPorPeriodo(periodo);
     }
 
-    public void validarAsignacion(Asigna asigna){
-
-        if(asigna.getProfesor() == null){
-            throw new IllegalArgumentException(
-                    "Seleccione un profesor."
-            );
+    public double horasAsignadas(Integer idUnidadAP, String periodo, String tipoHora) {
+        List<Asigna> existentes = ServiceLocator.getInstanceAsignaDAO()
+                .obtenerPorUnidadPeriodoYTipo(idUnidadAP, periodo, tipoHora);
+        double total = 0;
+        for (Asigna a : existentes) {
+            total += Duration.between(a.getHoraInicio(), a.getHoraFin()).toMinutes() / 60.0;
         }
-
-        if(asigna.getUnidadAprendizaje() == null){
-            throw new IllegalArgumentException(
-                    "Seleccione una unidad de aprendizaje."
-            );
-        }
-
-        if(asigna.getDia() == null){
-            throw new IllegalArgumentException(
-                    "Seleccione un dia de la semana."
-            );
-        }
-
-        if(asigna.getGrupo() == null){
-            throw new IllegalArgumentException(
-                    "Seleccione un grupo."
-            );
-        }
-
-        if(asigna.getPeriodo() == null){
-            throw new IllegalArgumentException(
-                    "Seleccione un periodo academico."
-            );
-        }
-
-        if(asigna.getTipoHora() == null){
-            throw new IllegalArgumentException(
-                    "Seleccione el tipo de clase a asignar.."
-            );
-        }
-
-        if(asigna.getHoraInicio() == null){
-            throw new IllegalArgumentException(
-                    "Seleccione una hora de inicio."
-            );
-        }
-
-        if(asigna.getHoraFin() == null){
-            throw new IllegalArgumentException(
-                    "Seleccione una hora de fin."
-            );
-        }
-
-        if (!asigna.getHoraInicio().isBefore(asigna.getHoraFin())) {
-            throw new IllegalArgumentException(
-                    "La hora de inicio debe ser anterior a la hora de fin."
-            );
-        }
-
+        return total;
     }
 
-    private void validarLimiteHoras(Asigna asigna){
-
-        List<Asigna> asignacionesExistentes = ServiceLocator.getInstanceAsignaDAO().obtenerPorUnidadPeriodoYTipo(
-                asigna.getUnidadAprendizaje().getIdUnidadAP(),
-                asigna.getPeriodo(),
-                asigna.getTipoHora()
-        );
-
-        long horasYaAsignadas = 0;
-        for(Asigna asignaExistente : asignacionesExistentes){
-            horasYaAsignadas += Duration.between(asignaExistente.getHoraInicio(), asignaExistente.getHoraFin()).toHours();
-        }
-
-        long horasAsignacion = Duration.between(asigna.getHoraInicio(), asigna.getHoraFin()).toHours();
-
-        long sumaHoras = horasYaAsignadas + horasAsignacion;
-
-        if(sumaHoras > obtenerHorasPermitidas(asigna)){
-            throw new IllegalArgumentException(
-                    "No se pueden asignar mas horas de este tipo de clase."
-            );
-        }
-
+    public double horasRestantes(UnidadAprendizaje unidad, String periodo, String tipoHora) {
+        int horasDefinidas = horasDefinidasPorTipo(unidad, tipoHora);
+        return horasDefinidas - horasAsignadas(unidad.getIdUnidadAP(), periodo, tipoHora);
     }
 
-    private int obtenerHorasPermitidas(Asigna asigna){
-        String tipoClase = asigna.getTipoHora();
-
-        switch (tipoClase){
+    public int horasDefinidasPorTipo(UnidadAprendizaje unidad, String tipoHora) {
+        if (unidad == null || tipoHora == null) {
+            return 0;
+        }
+        switch (tipoHora) {
             case "Clase":
-                return asigna.getUnidadAprendizaje().getHorasClase();
-            case "Laboratorio":
-                return asigna.getUnidadAprendizaje().getHorasLab();
+                return unidad.getHorasClase() != null ? unidad.getHorasClase() : 0;
             case "Taller":
-                return asigna.getUnidadAprendizaje().getHorasTaller();
+                return unidad.getHorasTaller() != null ? unidad.getHorasTaller() : 0;
+            case "Laboratorio":
+                return unidad.getHorasLab() != null ? unidad.getHorasLab() : 0;
             default:
-                throw new IllegalArgumentException(
-                        "Tipo de clase no valido."
-                );
+                return 0;
         }
     }
 
-    public void validarTraslape(Asigna asigna) {
+    private void validarAsignacion(Asigna nueva) {
+        if (nueva == null || nueva.getProfesor() == null || nueva.getUnidadAprendizaje() == null
+                || nueva.getDia() == null || nueva.getHoraInicio() == null || nueva.getHoraFin() == null
+                || nueva.getTipoHora() == null || nueva.getPeriodo() == null) {
+            throw new IllegalArgumentException("Faltan datos para guardar la asignacion.");
+        }
 
-        List<Asigna> traslapes =
-                ServiceLocator.getInstanceAsignaDAO().obtenerTraslapes(
-                        asigna.getProfesor().getIdProfesor(),
-                        asigna.getDia(),
-                        asigna.getPeriodo(),
-                        asigna.getHoraInicio(),
-                        asigna.getHoraFin()
-                );
+        if (!nueva.getHoraInicio().isBefore(nueva.getHoraFin())) {
+            throw new IllegalArgumentException("La hora de inicio debe ser antes que la hora de fin.");
+        }
 
-        if (!traslapes.isEmpty()) {
+        if (nueva.getHoraInicio().isBefore(HORA_MIN) || nueva.getHoraFin().isAfter(HORA_MAX)) {
             throw new IllegalArgumentException(
-                    "El profesor ya tiene una asignación en ese horario."
-            );
+                    "El horario debe estar entre las 07:00 y las 22:00.");
+        }
+
+        List<Asigna> traslapes = ServiceLocator.getInstanceAsignaDAO().obtenerTraslapes(
+                nueva.getProfesor().getIdProfesor(),
+                nueva.getDia(),
+                nueva.getPeriodo(),
+                nueva.getHoraInicio(),
+                nueva.getHoraFin());
+
+        for (Asigna existente : traslapes) {
+            if (nueva.getIdAsignacion() != null
+                    && nueva.getIdAsignacion().equals(existente.getIdAsignacion())) {
+                continue;
+            }
+            throw new IllegalArgumentException(
+                    "El profesor ya tiene asignada " + existente.getUnidadAprendizaje().getNombre()
+                            + " ese dia de " + existente.getHoraInicio() + " a " + existente.getHoraFin() + ".");
+        }
+
+        double restantes = horasRestantes(nueva.getUnidadAprendizaje(), nueva.getPeriodo(), nueva.getTipoHora());
+        double duracionSolicitada = Duration.between(nueva.getHoraInicio(), nueva.getHoraFin()).toMinutes() / 60.0;
+        double margenIdAsignacion = (nueva.getIdAsignacion() != null) ? duracionSolicitada : 0;
+
+        if (duracionSolicitada > restantes + margenIdAsignacion + 0.001) {
+            throw new IllegalArgumentException(
+                    "Esta unidad ya no tiene horas de " + nueva.getTipoHora()
+                            + " disponibles en el periodo " + nueva.getPeriodo() + ".");
         }
     }
+
+
 
 }

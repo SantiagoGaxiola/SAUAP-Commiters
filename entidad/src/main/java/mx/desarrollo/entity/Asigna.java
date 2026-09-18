@@ -53,6 +53,11 @@ public class Asigna {
     @Column(name = "hora_fin", nullable = false)
     private LocalTime horaFin;
 
+    @NotNull
+    @Size(max = 15)
+    @Column(name = "tipo_hora", nullable = false, length = 15)
+    private String tipoHora;
+
     public Asigna() {
     }
 
@@ -126,5 +131,13 @@ public class Asigna {
 
     public void setHoraFin(LocalTime horaFin) {
         this.horaFin = horaFin;
+    }
+
+    public String getTipoHora() {
+        return tipoHora;
+    }
+
+    public void setTipoHora(String tipoHora) {
+        this.tipoHora = tipoHora;
     }
 }

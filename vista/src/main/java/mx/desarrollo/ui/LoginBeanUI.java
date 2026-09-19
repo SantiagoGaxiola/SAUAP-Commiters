@@ -38,7 +38,7 @@ public class LoginBeanUI implements Serializable{
     }
 
     public void login() throws IOException {
-        String appURL = "/index.xhtml";
+        String appURL = "/profesores.xhtml";
         Usuario us;
 
         try {

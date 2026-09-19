@@ -14,6 +14,7 @@ import mx.desarrollo.entity.Asigna;
 import mx.desarrollo.entity.Profesor;
 import mx.desarrollo.entity.UnidadAprendizaje;
 import mx.desarrollo.facade.FacadeAsigna;
+import mx.desarrollo.facade.FacadeProfesor;
 
 import java.io.Serializable;
 import java.time.Duration;
@@ -31,6 +32,7 @@ import java.util.logging.Logger;
 public class ConsultaBeanUI implements Serializable{
 
     private static final Logger LOGGER = Logger.getLogger(ConsultaBeanUI.class.getName());
+    private final FacadeProfesor facadeProfesor = new FacadeProfesor();
 
     private static final Map<String, String> ABREVIATURA_DIA = Map.of(
             "Lunes", "Lun",
@@ -74,7 +76,9 @@ public class ConsultaBeanUI implements Serializable{
                         p.getIdProfesor(), id -> new TarjetaProfesor(p));
                 tarjeta.agregar(a);
             }
-
+            for (Profesor p : facadeProfesor.obtenerTodos()) {
+                porProfesor.computeIfAbsent(p.getIdProfesor(), id -> new TarjetaProfesor(p));
+            }
             tarjetas = new ArrayList<>(porProfesor.values());
             tarjetas.sort(Comparator.comparing(t -> t.getProfesor().getNombreCompleto()));
             for (TarjetaProfesor t : tarjetas) {
@@ -170,12 +174,16 @@ public class ConsultaBeanUI implements Serializable{
         private final String dia;
         private final LocalTime horaInicio;
         private final LocalTime horaFin;
+        private final String periodo;
+        private final String grupo;
 
         public Sesion(Asigna a) {
             this.tipoHora = a.getTipoHora();
             this.dia = a.getDia();
             this.horaInicio = a.getHoraInicio();
             this.horaFin = a.getHoraFin();
+            this.periodo = a.getPeriodo();
+            this.grupo = a.getGrupo();
         }
 
         public String getTipoHora() {
@@ -184,6 +192,12 @@ public class ConsultaBeanUI implements Serializable{
 
         public String getDia() {
             return dia;
+        }
+        public String getPeriodo() {
+            return periodo;
+        }
+        public String getGrupo() {
+            return grupo;
         }
 
         public LocalTime getHoraInicio() {
@@ -203,7 +217,7 @@ public class ConsultaBeanUI implements Serializable{
         }
 
         public String getEtiquetaTipo() {
-            return tipoHora + " - " + getDuracionHoras() + "h";
+            return tipoHora + " - " + getDuracionHoras() + "h" + " - " + getGrupo() + " - " + getPeriodo();
         }
 
         public int getDuracionHoras() {

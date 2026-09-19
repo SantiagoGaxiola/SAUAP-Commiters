@@ -89,6 +89,7 @@
                                                      update="formCatalogo" process="@this" />
                                     <p:commandButton value="Eliminar" styleClass="btn-sm btn-eliminar"
                                                      actionListener="#{catalogoUI.eliminarUnidad(unidad)}"
+                                                     onclick="return confirm('Seguro que deseas eliminar la unidad &quot;#{unidad.nombre}&quot;? Esta accion no se puede deshacer.');"
                                                      update="formCatalogo" process="@this" />
                                 </p:column>
 

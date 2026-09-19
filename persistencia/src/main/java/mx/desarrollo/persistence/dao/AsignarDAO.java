@@ -31,6 +31,18 @@ public class AsignarDAO extends AbstractDAO<Asigna> {
                 .getResultList();
     }
 
+    public List<Asigna> obtenerPorProfesorYPeriodo(Integer idProfesor, String periodo) {
+        return entityManager.createQuery(
+                        "SELECT a FROM Asigna a " +
+                                "WHERE a.profesor.idProfesor = :idProfesor " +
+                                "AND a.periodo = :periodo",
+                        Asigna.class
+                )
+                .setParameter("idProfesor", idProfesor)
+                .setParameter("periodo", periodo)
+                .getResultList();
+    }
+
     public List<Asigna> obtenerPorPeriodo(String periodo) {
         return entityManager.createQuery(
                         "SELECT a FROM Asigna a WHERE a.periodo = :periodo",
@@ -83,6 +95,7 @@ public class AsignarDAO extends AbstractDAO<Asigna> {
                 .setParameter("horaFin", horaFin)
                 .getResultList();
     }
+
 
     @Override
     public EntityManager getEntityManager() {

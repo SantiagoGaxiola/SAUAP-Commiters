@@ -39,6 +39,10 @@ public class FacadeAsigna {
         return delegateAsigna.obtenerPorProfesor(idProfesor);
     }
 
+    public List<Asigna> obtenerPorProfesorYPeriodo(Integer idProfesor, String periodo){
+        return delegateAsigna.obtenerPorProfesorYPeriodo(idProfesor, periodo);
+    }
+
     public List<Asigna> obtenerPorPeriodo(String periodo){
         return delegateAsigna.obtenerPorPeriodo(periodo);
     }

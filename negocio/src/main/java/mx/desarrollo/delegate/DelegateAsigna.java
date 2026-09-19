@@ -40,9 +40,15 @@ public class DelegateAsigna {
         return ServiceLocator.getInstanceAsignaDAO().obtenerPorProfesor(idProfesor);
     }
 
+    public List<Asigna> obtenerPorProfesorYPeriodo(Integer idProfesor, String periodo){
+        return ServiceLocator.getInstanceAsignaDAO()
+                .obtenerPorProfesorYPeriodo(idProfesor, periodo);
+    }
+
     public List<Asigna> obtenerPorPeriodo(String periodo){
         return ServiceLocator.getInstanceAsignaDAO().obtenerPorPeriodo(periodo);
     }
+
 
     public double horasAsignadas(Integer idUnidadAP, String periodo, String tipoHora, String grupo) {
         List<Asigna> existentes = ServiceLocator.getInstanceAsignaDAO().obtenerPorUnidadPeriodoTipoYGrupo(idUnidadAP, periodo, tipoHora, grupo);

@@ -127,8 +127,9 @@
                                 <p:selectOneMenu value="#{asignacionUI.periodo}" required="true" style="width:100%;">
                                     <f:selectItem itemLabel="Selecciona" itemValue="#{null}" noSelectionOption="true" />
                                     <f:selectItems value="#{asignacionUI.periodos}" var="per" itemLabel="#{per}" itemValue="#{per}" />
-                                    <p:ajax event="change" listener="#{asignacionUI.recalcularTipos}"
-                                            update="formAsignacion:tipoSesion" />
+                                    <p:ajax event="change"
+                                            listener="#{asignacionUI.cambioPeriodo}"
+                                            update="formAsignacion:panelHorario formAsignacion:tipoSesion formAsignacion:btnGuardar" />
                                 </p:selectOneMenu>
 
                             </div>
@@ -168,7 +169,6 @@
                                     <ui:repeat value="#{fila.celdas}" var="celda">
                                         <td class="celda-horario #{celda.estado}">
                                             <h:outputText value="#{celda.texto}" rendered="#{celda.estado ne 'vacio'}" />
-                                            <h:outputText value=" (existente)" rendered="#{celda.estado eq 'existente'}" />
                                             <h:outputText value=" (conflicto)" rendered="#{celda.estado eq 'conflicto'}" />
                                         </td>
                                     </ui:repeat>

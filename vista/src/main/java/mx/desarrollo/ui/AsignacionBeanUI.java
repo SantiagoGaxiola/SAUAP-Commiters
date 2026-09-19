@@ -113,6 +113,11 @@ public class AsignacionBeanUI implements Serializable {
         }
     }
 
+    public void cambioPeriodo() {
+        recalcularTipos();
+        recalcularHorario();
+    }
+
     private String formatoHoras(double horas) {
         if (horas == Math.floor(horas)) {
             return String.valueOf((int) horas);
@@ -141,13 +146,13 @@ public class AsignacionBeanUI implements Serializable {
         }
 
 
-        if (idProfesorSeleccionado == null) {
+        if (idProfesorSeleccionado == null || periodo == null || periodo.isBlank()) {
             return;
         }
 
         List<Asigna> asignacionesProfesor;
         try {
-            asignacionesProfesor = facadeAsigna.obtenerPorProfesor(idProfesorSeleccionado);
+            asignacionesProfesor = facadeAsigna.obtenerPorProfesorYPeriodo(idProfesorSeleccionado, periodo);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error al consultar horario del profesor", e);
             return;
@@ -177,7 +182,7 @@ public class AsignacionBeanUI implements Serializable {
                 LocalTime horaSlot = LocalTime.of(hora, 0);
                 if (!existente.getHoraInicio().isAfter(horaSlot) && existente.getHoraFin().isAfter(horaSlot)) {
                     Celda celda = fila.getCeldas().get(columna);
-                    celda.setTexto(existente.getUnidadAprendizaje().getNombre());
+                    celda.setTexto(existente.getUnidadAprendizaje().getNombre() + " - Grupo: " + existente.getGrupo());
                     celda.setEstado(seTraslapaconLoSolicitado ? "conflicto" : "existente");
                 }
             }

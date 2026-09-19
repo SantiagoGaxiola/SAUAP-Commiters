@@ -44,19 +44,27 @@ public class DelegateAsigna {
         return ServiceLocator.getInstanceAsignaDAO().obtenerPorPeriodo(periodo);
     }
 
-    public double horasAsignadas(Integer idUnidadAP, String periodo, String tipoHora) {
-        List<Asigna> existentes = ServiceLocator.getInstanceAsignaDAO()
-                .obtenerPorUnidadPeriodoYTipo(idUnidadAP, periodo, tipoHora);
+    public double horasAsignadas(Integer idUnidadAP, String periodo, String tipoHora, String grupo) {
+        List<Asigna> existentes = ServiceLocator.getInstanceAsignaDAO().obtenerPorUnidadPeriodoTipoYGrupo(idUnidadAP, periodo, tipoHora, grupo);
+
         double total = 0;
+
         for (Asigna a : existentes) {
-            total += Duration.between(a.getHoraInicio(), a.getHoraFin()).toMinutes() / 60.0;
+            total += Duration.between(
+                    a.getHoraInicio(),
+                    a.getHoraFin()
+            ).toMinutes() / 60.0;
         }
+
         return total;
     }
 
-    public double horasRestantes(UnidadAprendizaje unidad, String periodo, String tipoHora) {
+    public double horasRestantes(
+            UnidadAprendizaje unidad, String periodo, String tipoHora, String grupo) {
+
         int horasDefinidas = horasDefinidasPorTipo(unidad, tipoHora);
-        return horasDefinidas - horasAsignadas(unidad.getIdUnidadAP(), periodo, tipoHora);
+
+        return horasDefinidas - horasAsignadas(unidad.getIdUnidadAP(), periodo, tipoHora, grupo);
     }
 
     public int horasDefinidasPorTipo(UnidadAprendizaje unidad, String tipoHora) {
@@ -77,7 +85,7 @@ public class DelegateAsigna {
 
     private void validarAsignacion(Asigna nueva) {
         if (nueva == null || nueva.getProfesor() == null || nueva.getUnidadAprendizaje() == null
-                || nueva.getDia() == null || nueva.getHoraInicio() == null || nueva.getHoraFin() == null
+                || nueva.getDia() == null || nueva.getGrupo() == null || nueva.getHoraInicio() == null || nueva.getHoraFin() == null
                 || nueva.getTipoHora() == null || nueva.getPeriodo() == null) {
             throw new IllegalArgumentException("Faltan datos para guardar la asignacion.");
         }
@@ -108,7 +116,7 @@ public class DelegateAsigna {
                             + " ese dia de " + existente.getHoraInicio() + " a " + existente.getHoraFin() + ".");
         }
 
-        double restantes = horasRestantes(nueva.getUnidadAprendizaje(), nueva.getPeriodo(), nueva.getTipoHora());
+        double restantes = horasRestantes(nueva.getUnidadAprendizaje(), nueva.getPeriodo(), nueva.getTipoHora(), nueva.getGrupo());
         double duracionSolicitada = Duration.between(nueva.getHoraInicio(), nueva.getHoraFin()).toMinutes() / 60.0;
         double margenIdAsignacion = (nueva.getIdAsignacion() != null) ? duracionSolicitada : 0;
 

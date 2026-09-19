@@ -90,7 +90,8 @@ public class AsignacionBeanUI implements Serializable {
         tipoSeleccionado = null;
 
         UnidadAprendizaje unidad = getUnidadSeleccionada();
-        if (unidad == null || periodo == null || periodo.isBlank()) {
+        if (unidad == null || periodo == null || periodo.isBlank()
+                || grupo == null || grupo.isBlank()) {
             return;
         }
 
@@ -100,7 +101,7 @@ public class AsignacionBeanUI implements Serializable {
                 if (definidas <= 0) {
                     continue;
                 }
-                double restantes = facadeAsigna.horasRestantes(unidad, periodo, tipo);
+                double restantes = facadeAsigna.horasRestantes(unidad, periodo, tipo, grupo);
                 if (restantes <= 0) {
                     continue;
                 }

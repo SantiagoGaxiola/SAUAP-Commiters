@@ -39,21 +39,24 @@ public class AsignarDAO extends AbstractDAO<Asigna> {
                 .getResultList();
     }
 
-    public List<Asigna> obtenerPorUnidadPeriodoYTipo(
+    public List<Asigna> obtenerPorUnidadPeriodoTipoYGrupo(
             Integer idUnidadAP,
             String periodo,
-            String tipoHora) {
+            String tipoHora,
+            String grupo) {
 
         return entityManager.createQuery(
                         "SELECT a FROM Asigna a " +
                                 "WHERE a.unidadAprendizaje.idUnidadAP = :idUnidadAP " +
                                 "AND a.periodo = :periodo " +
-                                "AND a.tipoHora = :tipoHora",
+                                "AND a.tipoHora = :tipoHora " +
+                                "AND a.grupo = :grupo",
                         Asigna.class
                 )
                 .setParameter("idUnidadAP", idUnidadAP)
                 .setParameter("periodo", periodo)
                 .setParameter("tipoHora", tipoHora)
+                .setParameter("grupo", grupo)
                 .getResultList();
     }
 

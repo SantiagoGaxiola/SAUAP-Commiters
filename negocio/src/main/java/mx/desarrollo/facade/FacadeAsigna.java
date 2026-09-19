@@ -43,8 +43,8 @@ public class FacadeAsigna {
         return delegateAsigna.obtenerPorPeriodo(periodo);
     }
 
-    public double horasRestantes(mx.desarrollo.entity.UnidadAprendizaje unidad, String periodo, String tipoHora){
-        return delegateAsigna.horasRestantes(unidad, periodo, tipoHora);
+    public double horasRestantes(mx.desarrollo.entity.UnidadAprendizaje unidad, String periodo, String tipoHora, String grupo){
+        return delegateAsigna.horasRestantes(unidad, periodo, tipoHora, grupo);
     }
 
     public int horasDefinidasPorTipo(mx.desarrollo.entity.UnidadAprendizaje unidad, String tipoHora){

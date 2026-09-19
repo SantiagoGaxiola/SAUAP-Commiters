@@ -116,7 +116,11 @@
                         <div class="tres-campos">
                             <div class="campo">
                                 <label>Grupo</label>
-                                <p:inputText value="#{asignacionUI.grupo}" required="true" maxlength="10" style="width:100%;" />
+                                <p:inputText value="#{asignacionUI.grupo}" required="true" maxlength="10" style="width:100%;">
+                                    <p:ajax event="change"
+                                            listener="#{asignacionUI.recalcularTipos}"
+                                            update="formAsignacion:tipoSesion" />
+                                </p:inputText>
                             </div>
                             <div class="campo">
                                 <label>Periodo</label>

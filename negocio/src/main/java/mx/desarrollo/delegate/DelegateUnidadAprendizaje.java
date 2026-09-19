@@ -48,6 +48,12 @@ public class DelegateUnidadAprendizaje {
             );
         }
 
+        if(!unidadAprendizaje.getNombre().matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9 ]+$")){
+            throw new IllegalArgumentException(
+                    "El nombre de la unidad de aprendizaje no puede contener caracteres especiales."
+            );
+        }
+
         if(unidadAprendizaje.getNombre().trim().length() > 50){
             throw new IllegalArgumentException(
                     "El nombre de la unidad de aprendizaje no puede ser mayor a 50 caracteres."

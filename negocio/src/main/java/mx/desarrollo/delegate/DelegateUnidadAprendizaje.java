@@ -9,6 +9,13 @@ public class DelegateUnidadAprendizaje {
 
     public void guardarUnidadAprendizaje(UnidadAprendizaje unidadAprendizaje){
         validarUnidadAprendizaje(unidadAprendizaje);
+
+        if(!ServiceLocator.getInstanceUnidadAprendizajeDAO().findByOneParameter(unidadAprendizaje.getNombre().trim(), "nombre").isEmpty()){
+            throw new IllegalArgumentException(
+                    "Ya existe una unidad de aprendizaje con ese nombre."
+            );
+        }
+
         ServiceLocator.getInstanceUnidadAprendizajeDAO().save(unidadAprendizaje);
     }
 

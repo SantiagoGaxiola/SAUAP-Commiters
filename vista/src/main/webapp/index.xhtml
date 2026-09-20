@@ -5,11 +5,14 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 <h:head>
-    <title>Facelet Title</title>
+    <title>Usuario</title>
 </h:head>
 <h:body>
+
     <p:panelGrid class="txt">
         <f:facet name="header">
+            <h:graphicImage name="sauap.png" alt="Logo SAUAP" style="width: 400px; height: auto;" />
+
             <p:row>
                 <p:column colspan="7"><p:graphicImage url="resources/user.png" class="logo"/></p:column>
             </p:row>
@@ -33,27 +36,28 @@
 </h:body>
 <style>
     .logo{
-        width: 170px;
+        width: 110px;
     }
     .celda{
-        width: 25%;
-        background-color: #089b4d;
-        color:white;
+        width: 30%;
+        background-color: #C3BF8C !important;
+        color: white;
+        font-weight: 700;
     }
     .txt{
         position: absolute;
-        top:0;
+        top: 0;
         bottom: 0;
         left: 0;
         right: 0;
-        height: 35%;
-        width: 25%;
+        height: fit-content;
+        width: 420px;
         padding: 25px;
         margin: auto;
-        background: white;
-        border-radius: 5px;
+        background: #83AE85;
+        border-radius: 10px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
+        font-family: "Segoe UI", Helvetica, Arial, sans-serif;
     }
 </style>
 </html>

@@ -27,18 +27,22 @@ public class UnidadAprendizajeBeanUI implements Serializable {
     private List<UnidadAprendizaje> unidadesFiltradas;
     private UnidadAprendizaje unidadForm;
     private String filtro;
+    /* Indica si el formulario esta editando una unidad existente (true) o dando de alta una nueva (false). */
     private boolean editando;
 
+    /* Crea el facade de negocio usado por este bean para leer/guardar/eliminar unidades. */
     public UnidadAprendizajeBeanUI(){
         facadeUnidadAprendizaje = new FacadeUnidadAprendizaje();
     }
 
+    /* Prepara el formulario en modo alta y carga el catalogo al entrar a la vista. */
     @PostConstruct
     public void init(){
         nuevaUnidad();
         cargarUnidades();
     }
 
+    /* Obtiene todas las unidades del facade y vuelve a aplicar el filtro vigente sobre la lista nueva. */
     private void cargarUnidades(){
         try {
             unidades = facadeUnidadAprendizaje.obtenerTodos();
@@ -52,6 +56,8 @@ public class UnidadAprendizajeBeanUI implements Serializable {
         filtrar();
     }
 
+    /*Filtra las unidades cargadas por coincidencia de nombre . Se ejecuta en memoria sobre la lista ya cargada, no vuelve a consultar
+     negocio, para que la busqueda en la vista se sienta instantanea.*/
     public void filtrar(){
         if(filtro == null || filtro.isBlank()){
             unidadesFiltradas = unidades;
@@ -63,11 +69,14 @@ public class UnidadAprendizajeBeanUI implements Serializable {
         }
     }
 
+    /* Limpia el formulario y lo pone en modo alta (por ejemplo, tras cancelar una edicion). */
     public void nuevaUnidad(){
         unidadForm = new UnidadAprendizaje();
         editando = false;
     }
 
+    /*Copia los datos de la unidad seleccionada al formulario y activa el modo edicion. Se copian los campos en vez de reusar la referencia para que
+     los cambios sin guardar en el formulario no alteren la fila de la tabla.*/
     public void cargarParaEditar(UnidadAprendizaje unidad) {
         unidadForm = new UnidadAprendizaje();
         unidadForm.setIdUnidadAP(unidad.getIdUnidadAP());
@@ -78,6 +87,8 @@ public class UnidadAprendizajeBeanUI implements Serializable {
         editando = true;
     }
 
+    /*Accion del boton "guardar" del formulario: segun el modo actual(editando) decide si debe actualizar o insertar la unidad, y en
+     cualquier caso reinicia el formulario y recarga la lista al terminar.*/
     public void guardarUnidad(){
         try{
             if(editando){
@@ -101,6 +112,8 @@ public class UnidadAprendizajeBeanUI implements Serializable {
         }
     }
 
+    /*Accion del boton "eliminar" en la tabla del catalogo. Si la unidad esta en uso en alguna asignacion, el facade lanzara una excepcion
+     que aqui se atrapa para mostrar un mensaje claro en la vista.*/
     public void eliminarUnidad(UnidadAprendizaje unidad) {
         try {
             facadeUnidadAprendizaje.eliminarUnidadAprendizaje(unidad);
@@ -113,6 +126,7 @@ public class UnidadAprendizajeBeanUI implements Serializable {
         }
     }
 
+    /* getters y setters: exponen la lista filtrada para la tabla, el formulario para el dialogo de alta/edicion y el filtro/estado para el binding de la vista */
 
 
     public List<UnidadAprendizaje> getUnidadesFiltradas() {

@@ -59,12 +59,14 @@ public class AsignacionBeanUI implements Serializable {
     private boolean hayConflicto;
     private String mensajeConflicto;
 
+    /* Crea los facades de negocio que usa este bean para profesores, unidades y asignaciones */
     public AsignacionBeanUI() {
         facadeProfesor = new FacadeProfesor();
         facadeUnidadAprendizaje = new FacadeUnidadAprendizaje();
         facadeAsigna = new FacadeAsigna();
     }
 
+    /* Carga los catalogos de profesores/unidades y deja la plantilla de horario lista y vacia al entrar a la vista. */
     @PostConstruct
     public void init() {
         cargarCatalogos();
@@ -72,6 +74,7 @@ public class AsignacionBeanUI implements Serializable {
         recalcularHorario();
     }
 
+    /* Obtiene los catalogos de profesores y unidades que llenan los combos del formulario; si falla, los deja vacios y avisa en la vista */
     private void cargarCatalogos() {
         try {
             profesores = facadeProfesor.obtenerTodos();
@@ -85,6 +88,9 @@ public class AsignacionBeanUI implements Serializable {
                             "Error al cargar profesores/unidades:", "Intente mas tarde"));
         }
     }
+
+    /* Recalcula, para la unidad/periodo/grupo elegidos, que tipos de sesion (Clase/Taller/Laboratorio) siguen teniendo horas disponibles por
+      agendar, y arma la lista de opciones con la etiqueta de horas restantes que ve el usuario en el combo. */
     public void recalcularTipos() {
         tiposDisponibles = new ArrayList<>();
         tipoSeleccionado = null;
@@ -113,11 +119,13 @@ public class AsignacionBeanUI implements Serializable {
         }
     }
 
+    /* Accion al cambiar el periodo en el formulario: refresca tanto los tipos disponibles como la plantilla de horario*/
     public void cambioPeriodo() {
         recalcularTipos();
         recalcularHorario();
     }
 
+    /* Formatea las horas restantes sin decimales innecesarios para la etiqueta del combo */
     private String formatoHoras(double horas) {
         if (horas == Math.floor(horas)) {
             return String.valueOf((int) horas);
@@ -125,6 +133,10 @@ public class AsignacionBeanUI implements Serializable {
         return String.valueOf(horas);
     }
 
+    /* Reconstruye la plantilla de horario del profesor seleccionado para el periodo elegido, pinta sus sesiones existentes celda por celda y
+     marca en rojo cualquier traslape con la sesion que se esta capturando. Se llama cada vez que cambia algo relevante del formulario para que la vista siempre
+      muestre el estado actualizado antes de guardar.
+     */
     public void recalcularHorario() {
         horario = new ArrayList<>();
         hayConflicto = false;
@@ -172,7 +184,7 @@ public class AsignacionBeanUI implements Serializable {
 
             if (seTraslapaconLoSolicitado) {
                 hayConflicto = true;
-                if(mensajeConflicto == null) {
+                if (mensajeConflicto == null) {
                     mensajeConflicto = "No se puede guardar: traslape";
                 }
             }
@@ -190,6 +202,11 @@ public class AsignacionBeanUI implements Serializable {
 
     }
 
+    /*
+     vuelve a recalcular el horario para asegurar que no haya un conflicto de ultimo momento, valida que
+     todos los campos requeridos esten llenos, arma la entidad Asigna con el usuario autenticado como responsable, y la guarda mediante
+     el facade. Al terminar limpia dia/horas para permitir capturar la iguiente sesion sin repetir el formulario completo
+     */
     public void guardar() {
         recalcularHorario();
 
@@ -256,6 +273,8 @@ public class AsignacionBeanUI implements Serializable {
         }
     }
 
+    /*Convierte el Date que usa el componente de hora de PrimeFaces a LocalTime (sin segundos ni nanos) para poder compararlo con las
+    horas ya guardadas de tipo LocalTime.*/
     private LocalTime aLocalTime(Date fecha) {
         if (fecha == null) {
             return null;
@@ -264,6 +283,7 @@ public class AsignacionBeanUI implements Serializable {
                 .withSecond(0).withNano(0);
     }
 
+    /* Quita espacios sobrantes del nombre del dia para comparaciones confiables entre vista y datos existentes. */
     private String normalizarDia(String dia) {
         if (dia == null) {
             return "";
@@ -272,11 +292,12 @@ public class AsignacionBeanUI implements Serializable {
     }
 
 
-
+    /* Representa una fila (una hora) de la parrilla de horario, con una celda por cada dia de la semana. */
     public static class FilaHorario implements Serializable {
         private final String etiqueta;
         private final List<Celda> celdas;
 
+        /* Crea la fila con la etiqueta de hora dada y una celda vacia por cada dia. */
         public FilaHorario(String etiqueta, int numDias) {
             this.etiqueta = etiqueta;
             this.celdas = new ArrayList<>();
@@ -294,6 +315,7 @@ public class AsignacionBeanUI implements Serializable {
         }
     }
 
+    /* Una celda individual de la parrilla: su texto (que se muestra) y su estado visual (vacio/existente/conflicto). */
     public static class Celda implements Serializable {
         private String texto = "";
         private String estado = "vacio";
@@ -315,6 +337,7 @@ public class AsignacionBeanUI implements Serializable {
         }
     }
 
+    /* Opcion del combo de tipo de sesion: el valor real ("Clase", etc.) y la etiqueta con horas restantes que ve el usuario. */
     public static class OpcionTipo implements Serializable {
         private final String valor;
         private final String etiqueta;
@@ -333,7 +356,7 @@ public class AsignacionBeanUI implements Serializable {
         }
     }
 
-
+    /* getters y setters, exponen catalogos, la parrilla calculada y los campos del formulario para el binding de la vista */
 
     public List<Profesor> getProfesores() {
         return profesores;
@@ -375,6 +398,7 @@ public class AsignacionBeanUI implements Serializable {
         this.idUnidadSeleccionada = idUnidadSeleccionada;
     }
 
+    /* Busca en el catalogo la UnidadAprendizaje completa correspondiente al id elegido en el combo. */
     public UnidadAprendizaje getUnidadSeleccionada() {
         if (idUnidadSeleccionada == null || unidades == null) {
             return null;

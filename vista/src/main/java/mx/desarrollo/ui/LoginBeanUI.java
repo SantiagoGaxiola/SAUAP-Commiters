@@ -27,16 +27,19 @@ public class LoginBeanUI implements Serializable{
     private LoginHelper loginHelper;
     private Usuario usuario;
 
+    /* Crea el helper de login*/
     public LoginBeanUI() {
         loginHelper = new LoginHelper();
     }
 
-
+    /* Inicializa un Usuario vacio para enlazar el formulario de login antes de que el usuario escriba algo. */
     @PostConstruct
     public void init(){
         usuario = new Usuario();
     }
 
+    /*Accion del boton de login: valida credenciales con LoginHelper y, si son correctas, redirige a la pantalla de profesores; si no,
+     muestra un mensaje de error en la propia vista.*/
     public void login() throws IOException {
         String appURL = "/profesores.xhtml";
         Usuario us;
@@ -65,6 +68,9 @@ public class LoginBeanUI implements Serializable{
         }
     }
 
+    /*Cierra la sesion invalidando el HttpSession (borra al usuario autenticado y cualquier dato de sesion) y regresa a la vista de login.
+     * @return outcome de navegacion JSF hacia login.xhtml
+     */
     public String logout(){
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "login?faces-redirect=true";

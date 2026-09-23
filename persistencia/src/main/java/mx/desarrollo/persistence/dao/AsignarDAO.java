@@ -7,6 +7,9 @@ import mx.desarrollo.persistence.persistence.AbstractDAO;
 import java.time.LocalTime;
 import java.util.List;
 
+// DAO encargado de manejar las asignaciones de profesores
+// y unidades de aprendizaje.
+
 public class AsignarDAO extends AbstractDAO<Asigna> {
 
     private final EntityManager entityManager;
@@ -15,7 +18,7 @@ public class AsignarDAO extends AbstractDAO<Asigna> {
         super(Asigna.class);
         this.entityManager = entityManager;
     }
-
+    //Obtiene todas las asignaciones registradas
     public List<Asigna> obtenerTodos() {
         entityManager.clear();
         return entityManager.createQuery(
@@ -24,6 +27,7 @@ public class AsignarDAO extends AbstractDAO<Asigna> {
         ).getResultList();
     }
 
+    //Como su nombre lo indica obtiene por Profesor asignado
     public List<Asigna> obtenerPorProfesor(Integer idProfesor) {
         return entityManager.createQuery(
                         "SELECT a FROM Asigna a WHERE a.profesor.idProfesor = :idProfesor",
@@ -31,7 +35,7 @@ public class AsignarDAO extends AbstractDAO<Asigna> {
                 ).setParameter("idProfesor", idProfesor)
                 .getResultList();
     }
-
+    //Obtiene por Profesor y periodo asignados.
     public List<Asigna> obtenerPorProfesorYPeriodo(Integer idProfesor, String periodo) {
         return entityManager.createQuery(
                         "SELECT a FROM Asigna a " +
@@ -44,6 +48,7 @@ public class AsignarDAO extends AbstractDAO<Asigna> {
                 .getResultList();
     }
 
+    //Obtiene unicamente por periodo asignado
     public List<Asigna> obtenerPorPeriodo(String periodo) {
         return entityManager.createQuery(
                         "SELECT a FROM Asigna a WHERE a.periodo = :periodo",
@@ -52,6 +57,7 @@ public class AsignarDAO extends AbstractDAO<Asigna> {
                 .getResultList();
     }
 
+    //Obtiene por unidad de aprendizaje, periodo, el tipo(clase,taller,laboratorio) y el grupo.
     public List<Asigna> obtenerPorUnidadPeriodoTipoYGrupo(
             Integer idUnidadAP,
             String periodo,
@@ -73,6 +79,7 @@ public class AsignarDAO extends AbstractDAO<Asigna> {
                 .getResultList();
     }
 
+        //Es el que extrae los traslapes del horario
     public List<Asigna> obtenerTraslapes(
             Integer idProfesor,
             String dia,

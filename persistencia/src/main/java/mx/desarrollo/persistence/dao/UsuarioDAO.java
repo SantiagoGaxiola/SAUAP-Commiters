@@ -7,10 +7,12 @@ import mx.desarrollo.entity.Usuario;
 import mx.desarrollo.persistence.persistence.AbstractDAO;
 
 import java.util.List;
-
+// DAO encargado de trabajar con los datos de los usuarios.
+// Hereda las operaciones generales de AbstractDAO.
 public class UsuarioDAO extends AbstractDAO<Usuario> {
     private final EntityManager entityManager;
-
+    
+// Recibe el EntityManager que permite comunicarse con la base de datos.
     public UsuarioDAO(EntityManager em) {
         super(Usuario.class);
         this.entityManager = em;

@@ -5,6 +5,8 @@ import mx.desarrollo.persistence.dao.*;
 import mx.desarrollo.persistence.dao.AsignarDAO;
 import mx.desarrollo.persistence.persistence.HibernateUtil;
 
+// Clase que centraliza la creación y acceso a los diferentes DAO.
+// De esta manera, las demás capas pueden obtener el DAO que necesitan.
 public class ServiceLocator {
 
     private static AlumnoDAO alumnoDAO;
@@ -13,10 +15,14 @@ public class ServiceLocator {
     private static UnidadAprendizajeDAO unidadAprendizajeDAO;
     private static AsignarDAO asignaDAO;
 
+    // Obtiene un EntityManager desde HibernateUtil
+    // para que los DAO puedan comunicarse con la base de datos.
     private static EntityManager getEntityManager() {
         return HibernateUtil.getEntityManager();
     }
 
+
+        //Esta parte no se utiliza pero se encuentra debido a que reciclamos el codigo jeje
     /**
      * Se crea la instancia de AlumnoDAO si esta no existe.
      * Se mantiene temporalmente para compatibilidad con el código existente.

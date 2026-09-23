@@ -6,10 +6,14 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalTime;
 
+//En esta clase se representa la asignacion de una unida de aprendizaje
+//La asignación de grupo,dia y materias
 @Entity
 @Table(name = "asigna")
 public class Asigna {
 
+    //Identificador único de la asignación
+    //Se genera de manera automatica.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_asignacion", nullable = false)
@@ -19,12 +23,13 @@ public class Asigna {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
-
+//ID del profesor que impartia la unidad de aprendizaje , de la misma manera es la que extrae la información de la tabla.
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_profesor", nullable = false)
     private Profesor profesor;
 
+    //Selector de la unidad de aprendizaje, basicamente donde te aparece las unidades ya que es donde trae la información de la tabla
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_unidadAP", nullable = false)
@@ -58,6 +63,8 @@ public class Asigna {
     @Column(name = "tipo_hora", nullable = false, length = 15)
     private String tipoHora;
 
+
+    //Métodos para consultar,acceder y modificar los datos de las asignaciones
     public Asigna() {
     }
 

@@ -10,10 +10,16 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+// Clase base que contiene operaciones generales para trabajar
+// con las entidades de la base de datos.
+// Los otros DAO´S reutilizan estos métodos.
 public abstract class AbstractDAO<T> {
 
+    // Guarda el tipo de entidad con el que trabajará este DAO.
     private final Class<T> entityClass;
 
+    // Recibe la clase de la entidad para saber con qué tipo de
+    // información debe trabajar el DAO.
     protected AbstractDAO(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
@@ -25,21 +31,25 @@ public abstract class AbstractDAO<T> {
        ======================== */
 
     // Save or persist a new entity
+    // Guarda una nueva entidad en la base de datos.
     public void save(T entity) {
         executeInsideTransaction(em -> em.persist(entity));
     }
 
     // Update an existing entity
+    // Actualiza la información de una entidad existente.
     public void update(T entity) {
         executeInsideTransaction(em -> em.merge(entity));
     }
 
     // Delete an entity
+    // Elimina una entidad de la base de datos.
     public void delete(T entity) {
         executeInsideTransaction(em -> em.remove(em.contains(entity) ? entity : em.merge(entity)));
     }
 
     // Find by ID
+    // Busca una entidad utilizando su identificador.
     public Optional<T> find(Object id) {
         return Optional.ofNullable(getEntityManager().find(entityClass, id));
     }
@@ -55,6 +65,7 @@ public abstract class AbstractDAO<T> {
     }
 
     // Find all
+    // Obtiene todos los registros de una determinada entidad.
     public List<T> findAll() {
         return execute(em ->
                 em.createQuery("SELECT e FROM " + entityClass.getSimpleName() + " e", entityClass)
@@ -72,6 +83,8 @@ public abstract class AbstractDAO<T> {
 
     /* ========================
        Consultas personalizadas
+       Métodos para realizar búsquedas específicas
+       dependiendo de los datos que se necesiten consultar.
        ======================== */
 
 

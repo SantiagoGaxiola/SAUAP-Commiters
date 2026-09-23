@@ -6,6 +6,8 @@ import mx.desarrollo.persistence.persistence.AbstractDAO;
 
 import java.util.List;
 
+// DAO encargado de realizar las operaciones relacionadas
+// con las unidades de aprendizaje.
 public class UnidadAprendizajeDAO extends AbstractDAO<UnidadAprendizaje> {
 
     private final EntityManager entityManager;
@@ -15,6 +17,7 @@ public class UnidadAprendizajeDAO extends AbstractDAO<UnidadAprendizaje> {
         this.entityManager = entityManager;
     }
 
+    // Obtiene las unidades de aprendizaje registradas.
     public List<UnidadAprendizaje> obtenerTodos() {
         return entityManager.createQuery(
                 "SELECT u FROM UnidadAprendizaje u",

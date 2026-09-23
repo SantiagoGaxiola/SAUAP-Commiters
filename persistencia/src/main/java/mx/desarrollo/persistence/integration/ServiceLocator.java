@@ -9,7 +9,6 @@ import mx.desarrollo.persistence.persistence.HibernateUtil;
 // De esta manera, las demás capas pueden obtener el DAO que necesitan.
 public class ServiceLocator {
 
-    private static AlumnoDAO alumnoDAO;
     private static UsuarioDAO usuarioDAO;
     private static ProfesorDAO profesorDAO;
     private static UnidadAprendizajeDAO unidadAprendizajeDAO;
@@ -23,17 +22,6 @@ public class ServiceLocator {
 
 
         //Esta parte no se utiliza pero se encuentra debido a que reciclamos el codigo jeje
-    /**
-     * Se crea la instancia de AlumnoDAO si esta no existe.
-     * Se mantiene temporalmente para compatibilidad con el código existente.
-     */
-    public static AlumnoDAO getInstanceAlumnoDAO() {
-        if (alumnoDAO == null) {
-            alumnoDAO = new AlumnoDAO(getEntityManager());
-        }
-        return alumnoDAO;
-    }
-
     /**
      * Se crea la instancia de UsuarioDAO si esta no existe.
      */

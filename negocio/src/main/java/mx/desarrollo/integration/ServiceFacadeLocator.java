@@ -1,6 +1,5 @@
 package mx.desarrollo.integration;
 
-import mx.desarrollo.facade.FacadeAlumno;
 import mx.desarrollo.facade.FacadeUsuario;
 import mx.desarrollo.facade.FacadeProfesor;
 import mx.desarrollo.facade.FacadeUnidadAprendizaje;
@@ -9,20 +8,10 @@ import mx.desarrollo.facade.FacadeAsigna;
 public class ServiceFacadeLocator {
 
     // Almacena las instancias de los Facades del sistema
-    private static FacadeAlumno facadeAlumno;
     private static FacadeUsuario facadeUsuario;
     private static FacadeProfesor facadeProfesor;
     private static FacadeAsigna facadeAsigna;
     private static FacadeUnidadAprendizaje facadeUnidadAprendizaje;
-
-    public static FacadeAlumno getInstanceFacadeAlumno() {
-        if (facadeAlumno == null) {
-            facadeAlumno = new FacadeAlumno();
-            return facadeAlumno;
-        } else {
-            return facadeAlumno;
-        }
-    }
 
     // Obtiene la instancia del Facade de Usuario
     public static FacadeUsuario getInstanceFacadeUsuario() {

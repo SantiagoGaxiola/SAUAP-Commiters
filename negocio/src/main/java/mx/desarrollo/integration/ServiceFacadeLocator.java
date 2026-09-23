@@ -8,6 +8,7 @@ import mx.desarrollo.facade.FacadeAsigna;
 
 public class ServiceFacadeLocator {
 
+    // Almacena las instancias de los Facades del sistema
     private static FacadeAlumno facadeAlumno;
     private static FacadeUsuario facadeUsuario;
     private static FacadeProfesor facadeProfesor;
@@ -23,6 +24,7 @@ public class ServiceFacadeLocator {
         }
     }
 
+    // Obtiene la instancia del Facade de Usuario
     public static FacadeUsuario getInstanceFacadeUsuario() {
         if (facadeUsuario == null) {
             facadeUsuario = new FacadeUsuario();
@@ -32,6 +34,7 @@ public class ServiceFacadeLocator {
         }
     }
 
+    // Obtiene la instancia del Facade de Profesor
     public static FacadeProfesor getInstanceFacadeProfesor() {
         if (facadeProfesor == null) {
             facadeProfesor = new FacadeProfesor();
@@ -39,6 +42,7 @@ public class ServiceFacadeLocator {
         return facadeProfesor;
     }
 
+    // Obtiene la instancia del Facade de UnidadAprendizaje
     public static FacadeUnidadAprendizaje getInstanceFacadeUnidadAprendizaje() {
         if (facadeUnidadAprendizaje == null) {
             facadeUnidadAprendizaje = new FacadeUnidadAprendizaje();
@@ -46,6 +50,7 @@ public class ServiceFacadeLocator {
         return facadeUnidadAprendizaje;
     }
 
+    // Obtiene la instancia del Facade de Asigna
     public static FacadeAsigna getInstanceFacadeAsigna() {
         if (facadeAsigna == null) {
             facadeAsigna = new FacadeAsigna();

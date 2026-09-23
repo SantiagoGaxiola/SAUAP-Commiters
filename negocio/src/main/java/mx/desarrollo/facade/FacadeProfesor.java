@@ -28,10 +28,12 @@ public class FacadeProfesor {
         delegateProfesor.eliminarProfesor(profesor);
     }
 
+    // Solicita al Delegate buscar un profesor por su identificador
     public Optional<Profesor> buscarProfesor(Integer id){
         return delegateProfesor.buscarProfesor(id);
     }
 
+    // Solicita al Delegate obtener todos los profesores registrados
     public List<Profesor> obtenerTodos(){
         return delegateProfesor.obtenerTodos();
     }

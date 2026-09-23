@@ -11,10 +11,12 @@ public class FacadeUsuario {
         this.delegateUsuario = new DelegateUsuario();
     }
 
+    // Solicita al Delegate verificar las credenciales del usuario
     public Usuario login(String password, String correo){
         return delegateUsuario.login(password, correo);
     }
 
+    // Solicita al Delegate guardar un nuevo usuario
     public void saveUsario(Usuario usuario){
         delegateUsuario.saveUsario(usuario);
     }

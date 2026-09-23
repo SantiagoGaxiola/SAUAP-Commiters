@@ -27,10 +27,12 @@ public class FacadeUnidadAprendizaje {
         delegateUnidadAprendizaje.eliminarUnidadAprendizaje(unidadAprendizaje);
     }
 
+    // Solicita al Delegate buscar una unidad de aprendizaje por su nombre
     public Optional<UnidadAprendizaje> buscarUnidadAprendizaje(String nombre){
         return delegateUnidadAprendizaje.buscarUnidadAprendizaje(nombre);
     }
 
+    // Solicita al Delegate obtener todas las unidades de aprendizaje registradas
     public List<UnidadAprendizaje> obtenerTodos(){
         return delegateUnidadAprendizaje.obtenerTodos();
     }
